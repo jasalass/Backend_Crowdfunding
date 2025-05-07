@@ -7,30 +7,33 @@ export const realizarAporte = async (req, res) => {
 
   try {
     // Validar que exista la campaña
-    const campania = await Campanias.findById(campaniaId);
-    if (!campania) {
-      return res.status(404).json({ error: 'Campaña no encontrada' });
-    }
+const campania = await Campanias.findById(campaniaId).lean();
+if (!campania) {
+  return res.status(404).json({ error: 'Campaña no encontrada' });
+}
 
-    // Validar monto mínimo
-    if (!monto || monto < 1000) {
-      return res.status(400).json({ error: 'El aporte debe ser de al menos $1.000' });
-    }
+// Validar monto mínimo
+if (!monto || monto < 1000) {
+  return res.status(400).json({ error: 'El aporte debe ser de al menos $1.000' });
+}
 
-    // Crear el documento de aporte
-    const nuevoAporte = new Aportes({
-      campaniaId,
-      usuarioId,
-      monto
-    });
+// Crear aporte
+const aporte = new Aportes({
+  campaniaId,
+  usuarioId,
+  monto
+});
 
-    await nuevoAporte.save();
+await aporte.save();
 
-    // Actualizar recaudado en la campaña
-    campania.recaudado += monto;
-    await campania.save();
+// Actualizar recaudado usando $inc
+await Campanias.updateOne(
+  { _id: campaniaId },
+  { $inc: { recaudado: monto } }
+);
 
-    res.status(201).json({ mensaje: 'Aporte registrado exitosamente' });
+res.status(201).json({ mensaje: 'Aporte registrado exitosamente' });
+
   } catch (err) {
     console.error("Error al registrar aporte:", err.message);
     console.error(err.stack);
