@@ -26,6 +26,7 @@ app.use('/api/campanias', campaniasRoutes);
 app.use('/api/aportes', aportesRoutes)
 
 //Conexión a mongoDB
+
 mongoose.connect(process.env.MONGO_URL)
 .then(() => {
     console.log('✅ Conectado a MongoDB');
