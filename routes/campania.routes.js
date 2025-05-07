@@ -7,6 +7,8 @@ import {
   obtenerCampaniaPorId
 } from '../controllers/campanias.controller.js';
 
+import { eliminarCampania } from '../controllers/campanias.controller.js';
+
 const router = express.Router();
 
 // Crear nueva campaña
@@ -20,5 +22,8 @@ router.get('/mias', verificarToken, obtenerCampaniasPorCreador);
 
 // Obtener detalle de campaña por ID
 router.get('/:id', obtenerCampaniaPorId);
+
+
+router.delete('/:id', verificarToken, eliminarCampania);
 
 export default router;

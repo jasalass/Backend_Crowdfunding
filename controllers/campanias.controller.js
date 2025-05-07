@@ -65,3 +65,25 @@ export const obtenerCampaniaPorId = async (req, res) => {
     res.status(500).json({ error: "Error al obtener campaña" });
   }
 };
+
+
+export const eliminarCampania = async (req, res) => {
+  try {
+    const idCampania = req.params.id;
+    const usuarioId = req.usuario.id;
+
+    const campania = await Campania.findById(idCampania);
+
+    if (!campania) return res.status(404).json({ error: "Campaña no encontrada" });
+
+    if (campania.creador.toString() !== usuarioId) {
+      return res.status(403).json({ error: "No tienes permisos para eliminar esta campaña" });
+    }
+
+    await Campania.findByIdAndDelete(idCampania);
+    res.json({ mensaje: "Campaña eliminada correctamente" });
+  } catch (error) {
+    console.error("Error al eliminar campaña:", error);
+    res.status(500).json({ error: "Error al eliminar la campaña" });
+  }
+};
