@@ -33,7 +33,7 @@ export const crearCampania = async (req, res) => {
 
 export const obtenerCampanias = async (req, res) => {
   try {
-    const campanias = await Campania.find({ estado: 'activa' }).populate('creador', 'nombre correo');
+    const campanias = await Campania.find();
     res.json(campanias);
   } catch (error) {
     console.error("Error al obtener campañas:", error);
