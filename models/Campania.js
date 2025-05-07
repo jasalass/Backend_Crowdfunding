@@ -61,4 +61,5 @@ campaniaSchema.pre('validate', function (next) {
     next();
   });
   
-export default mongoose.model('Campania', campaniaSchema);
+  export default mongoose.models.Campania || mongoose.model('Campania', campaniaSchema);
+
