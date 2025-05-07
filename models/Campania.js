@@ -54,4 +54,11 @@ const campaniaSchema = new mongoose.Schema({
   timestamps: true
 });
 
+campaniaSchema.pre('validate', function (next) {
+    if (!this.creador) {
+      console.trace("⛔ Se intentó validar una Campania sin 'creador':", this);
+    }
+    next();
+  });
+  
 export default mongoose.model('Campania', campaniaSchema);
