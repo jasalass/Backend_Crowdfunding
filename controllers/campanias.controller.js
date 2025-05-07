@@ -54,15 +54,16 @@ export const obtenerCampaniasPorCreador = async (req, res) => {
   }
 };
 
-// (Opcional) Obtener detalle de una campaña específica
 export const obtenerCampaniaPorId = async (req, res) => {
   try {
-    const campania = await Campania.findById(req.params.id).populate('creador', 'nombre correo');
-    if (!campania) return res.status(404).json({ mensaje: "Campaña no encontrada" });
+    const campania = await Campania.findById(req.params.id);
+    if (!campania) {
+      return res.status(404).json({ error: 'Campaña no encontrada' });
+    }
     res.json(campania);
   } catch (error) {
     console.error("Error al obtener campaña por ID:", error);
-    res.status(500).json({ error: "Error al obtener campaña" });
+    res.status(500).json({ error: 'Error al obtener campaña' });
   }
 };
 

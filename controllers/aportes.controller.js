@@ -6,7 +6,7 @@ export const realizarAporte = async (req, res) => {
   const usuarioId = req.usuario.id;
 
   try {
-    // Validar campaña
+    // Validar que exista la campaña
     const campania = await Campanias.findById(campaniaId);
     if (!campania) {
       return res.status(404).json({ error: 'Campaña no encontrada' });
@@ -17,22 +17,22 @@ export const realizarAporte = async (req, res) => {
       return res.status(400).json({ error: 'El aporte debe ser de al menos $1.000' });
     }
 
-    // Crear aporte
-    const aporte = new Aporte({
+    // Crear el documento de aporte
+    const nuevoAporte = new Aportes({
       campaniaId,
       usuarioId,
       monto
     });
 
-    await aporte.save();
+    await nuevoAporte.save();
 
-    // Actualizar recaudado en campaña
+    // Actualizar recaudado en la campaña
     campania.recaudado += monto;
     await campania.save();
 
     res.status(201).json({ mensaje: 'Aporte registrado exitosamente' });
   } catch (err) {
-    console.error(err);
+    console.error("Error al registrar aporte:", err);
     res.status(500).json({ error: 'Error al procesar el aporte' });
   }
 };
