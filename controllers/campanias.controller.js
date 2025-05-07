@@ -31,7 +31,6 @@ export const crearCampania = async (req, res) => {
   }
 };
 
-// Obtener todas las campañas activas
 export const obtenerCampanias = async (req, res) => {
   try {
     const campanias = await Campania.find({ estado: 'activa' }).populate('creador', 'nombre correo');
@@ -41,6 +40,7 @@ export const obtenerCampanias = async (req, res) => {
     res.status(500).json({ error: "Error al obtener campañas" });
   }
 };
+
 
 // Obtener campañas creadas por el usuario autenticado
 export const obtenerCampaniasPorCreador = async (req, res) => {
