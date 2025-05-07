@@ -32,7 +32,9 @@ export const realizarAporte = async (req, res) => {
 
     res.status(201).json({ mensaje: 'Aporte registrado exitosamente' });
   } catch (err) {
-    console.error("Error al registrar aporte:", err);
-    res.status(500).json({ error: 'Error al procesar el aporte' });
+    console.error("Error al registrar aporte:", err.message);
+    console.error(err.stack);
+    res.status(500).json({ error: err.message || 'Error al procesar el aporte' });
   }
+  
 };
